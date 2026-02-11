@@ -1,8 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import "./index.css"
 
 function App() {
+  const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
+  useEffect(() => {
+    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    setTasks(savedTasks);
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+  const addTask = () => {
+    if (task.trim() === "") return;
+    setTasks([...tasks, task]);
+    setTask("");
+  };
+  const deleteTask = (index) => {
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+  };
+
   return (
-   <div className="min-h-screen bg-gradient-to-r from-blue-500 to-white-500 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-white-500 flex items-center justify-center">
       <div className="bg-white p-8 rounded-2xl shadow-2xl w-130">
         
         <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
@@ -45,4 +65,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
